@@ -1,0 +1,89 @@
+{
+  "info": {
+    "name": "Library Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Authors",
+      "item": [
+        {
+          "name": "Create Author",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"George Orwell\",\n  \"biography\": \"British author\"\n}" },
+            "url": "{{baseUrl}}/api/authors"
+          }
+        },
+        { "name": "Get Author by Id", "request": { "method": "GET", "url": "{{baseUrl}}/api/authors/1" } },
+        { "name": "List Authors (paged)", "request": { "method": "GET", "url": "{{baseUrl}}/api/authors?page=0&size=10&sort=name,asc" } },
+        {
+          "name": "Update Author",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"George Orwell\",\n  \"biography\": \"Updated bio\"\n}" },
+            "url": "{{baseUrl}}/api/authors/1"
+          }
+        },
+        { "name": "Delete Author", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/authors/1" } }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"1984\",\n  \"isbn\": \"9780451524935\",\n  \"publishedDate\": \"1949-06-08\",\n  \"authorId\": 1\n}" },
+            "url": "{{baseUrl}}/api/books"
+          }
+        },
+        { "name": "Get Book by Id", "request": { "method": "GET", "url": "{{baseUrl}}/api/books/1" } },
+        { "name": "List Books (paged)", "request": { "method": "GET", "url": "{{baseUrl}}/api/books?page=0&size=10&sort=title,asc" } },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"1984\",\n  \"isbn\": \"9780451524935\",\n  \"publishedDate\": \"1949-06-08\",\n  \"authorId\": 1\n}" },
+            "url": "{{baseUrl}}/api/books/1"
+          }
+        },
+        { "name": "Delete Book", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/books/1" } }
+      ]
+    },
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "Create Member",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Jane Doe\",\n  \"email\": \"jane@example.com\"\n}" },
+            "url": "{{baseUrl}}/api/members"
+          }
+        },
+        { "name": "Get Member by Id", "request": { "method": "GET", "url": "{{baseUrl}}/api/members/1" } },
+        { "name": "List Members (paged)", "request": { "method": "GET", "url": "{{baseUrl}}/api/members?page=0&size=10&sort=fullName,asc" } },
+        {
+          "name": "Update Member",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Jane Doe\",\n  \"email\": \"jane.doe@example.com\"\n}" },
+            "url": "{{baseUrl}}/api/members/1"
+          }
+        },
+        { "name": "Delete Member", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/members/1" } }
+      ]
+    }
+  ]
+}
