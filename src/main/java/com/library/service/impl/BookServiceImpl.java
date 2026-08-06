@@ -8,11 +8,15 @@ import com.library.exception.ResourceNotFoundException;
 import com.library.repository.AuthorRepository;
 import com.library.repository.BookRepository;
 import com.library.service.BookService;
+import com.library.specification.BookSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +51,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookResponseDTO> getAll(Pageable pageable) {
         return bookRepository.findAll(pageable).map(this::toResponse);
+    }
+
+    @Override
+    public List<BookResponseDTO> search(String title, String author) {
+        Specification<Book> spec = Specification.where(BookSpecification.hasTitle(title))
+                .and(BookSpecification.hasAuthorName(author));
+
+        return bookRepository.findAll(spec)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     @Override

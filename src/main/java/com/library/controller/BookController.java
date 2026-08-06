@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -42,10 +43,18 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAll(pageable));
     }
 
+    @GetMapping("/search")
+    @Operation(summary = "Search books dynamically by title and author")
+    public ResponseEntity<List<BookResponseDTO>> search(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author) {
+        return ResponseEntity.ok(bookService.search(title, author));
+    }
+
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing book")
     public ResponseEntity<BookResponseDTO> update(@PathVariable Long id,
-                                                   @Valid @RequestBody BookRequestDTO request) {
+                                                  @Valid @RequestBody BookRequestDTO request) {
         return ResponseEntity.ok(bookService.update(id, request));
     }
 

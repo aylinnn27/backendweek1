@@ -28,17 +28,20 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/books/**").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/api/v1/books/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/v1/books/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/v1/books/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
-                        )
+                .authorizeHttpRequests(requests -> requests // Changed 'auth' to 'requests' to be clear
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+
+                        // RBAC: Roles must match what we set up in the User entity
+                        .requestMatchers(HttpMethod.GET, "/api/v1/books/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/books/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/books/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/books/**").hasRole("ADMIN")
+
+                        .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authenticationProvider(authenticationProvider)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
