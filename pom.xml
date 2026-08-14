@@ -89,6 +89,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- Spring Cache for book caching -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
         <!-- JWT Library (using jjwt) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

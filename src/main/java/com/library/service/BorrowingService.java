@@ -1,5 +1,7 @@
 package com.library.service;
 
+import com.library.service.NotificationService;
+
 import com.library.entity.Book;
 import com.library.entity.BookStatus;
 import com.library.entity.BorrowRecord;
@@ -10,6 +12,7 @@ import com.library.repository.BorrowRecordRepository;
 import com.library.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -18,11 +21,14 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class BorrowingService {
 
+    private final NotificationService notificationService;
+
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
     private final BorrowRecordRepository borrowRecordRepository;
 
     @Transactional
+    @CacheEvict(value = "books", key = "#bookId")
     public void borrowBook(Long bookId, Long memberId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
@@ -44,5 +50,6 @@ public class BorrowingService {
 
         bookRepository.save(book);
         borrowRecordRepository.save(record);
+        notificationService.sendBorrowNotification(memberId, bookId);
     }
 }

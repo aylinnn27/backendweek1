@@ -1,0 +1,13 @@
+# Example production values.
+# Set these as environment variables in the deployment environment.
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library
+    username: your_username
+    password: your_password
+    driver-class-name: org.postgresql.Driver
+
+app:
+  file:
+    upload-dir: /var/lib/library/uploads/books

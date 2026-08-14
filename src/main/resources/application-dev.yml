@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarydb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    com.library: DEBUG
+    org.springframework.cache: DEBUG
+
+app:
+  file:
+    upload-dir: uploads/books
+
+  cleanup:
+    retention-days: 7

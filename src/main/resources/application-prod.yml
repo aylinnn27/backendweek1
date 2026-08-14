@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    com.library: INFO
+
+app:
+  file:
+    upload-dir: ${UPLOAD_DIR:uploads/books}
+
+  cleanup:
+    retention-days: ${FILE_RETENTION_DAYS:7}

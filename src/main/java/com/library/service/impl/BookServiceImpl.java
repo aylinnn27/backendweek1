@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Cacheable(value = "books", key = "#id")
     public BookResponseDTO getById(Long id) {
         Book book = findBookOrThrow(id);
         return toResponse(book);
@@ -66,6 +69,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "books", key = "#id")
     public BookResponseDTO update(Long id, BookRequestDTO request) {
         Book book = findBookOrThrow(id);
 
@@ -84,6 +88,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "books", key = "#id")
     public void delete(Long id) {
         Book book = findBookOrThrow(id);
         bookRepository.delete(book);
