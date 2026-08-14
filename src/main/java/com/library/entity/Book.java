@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.util.HashSet; // NEW
-import java.util.Set;     // NEW
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -26,6 +26,11 @@ public class Book {
     private String isbn;
 
     private LocalDate publishedDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private BookStatus status = BookStatus.AVAILABLE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)

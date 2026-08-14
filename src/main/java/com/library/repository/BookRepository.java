@@ -16,7 +16,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
 
     Page<Book> findByAuthorId(Long authorId, Pageable pageable);
 
-    @Query("SELECT b FROM Book b JOIN b.categories c WHERE LOWER(c.name) = LOWER(:categoryName)")
+    @Query("SELECT DISTINCT b FROM Book b JOIN b.categories c WHERE LOWER(c.name) = LOWER(:categoryName)")
     List<Book> findByCategoryName(@Param("categoryName") String categoryName);
 
     List<Book> findByTitleContainingIgnoreCase(String title);
