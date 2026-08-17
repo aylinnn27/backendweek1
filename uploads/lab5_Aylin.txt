@@ -1,0 +1,92 @@
+                    Number 5
+#include <stdio.h>
+
+int factorial(int *num, int *fact){
+    *fact = 1;
+    for(int i=1; i<*num+1; i++){
+        *fact *= i;
+    }
+    return *fact;
+}
+
+int main(){
+    int *num, n, *fact, f;
+    puts("Enter: ");
+    scanf("%d", &n);
+    num = &n;
+    fact = &f;
+    factorial(num, fact);
+    printf("%d", *fact);
+
+    return 0;
+}
+
+                    Number 6
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define FINISH 70
+
+int moveT(int);
+int moveH(int);
+void printPosition(int, int);
+
+int main(){
+    int tor = 1, hare = 1, tick = 0;
+
+    srand(time(NULL));
+
+    printf("BANG !!!!!\n");
+    printf("AND THEY'RE OFF !!!!!\n");
+
+    while(tor<FINISH && hare<FINISH){
+        tor=moveT(tor);
+        hare=moveH(hare);
+        printPosition(tor,hare);
+        tick++;
+
+        if(tor >= FINISH && hare >= FINISH) puts("It's a tie!");
+        else if(tor>= FINISH) puts("Tortoise won!");
+        else if(hare>= FINISH) puts("Hare won!");
+    }
+    printf("\nTime: %d seconds", tick);
+    return 0;
+}
+
+int moveT(int t_pos){
+    int num = (rand()%10)+1;
+    if(num>=1 && num<=5) t_pos+=3;
+    else if (num >= 6 && num <= 7) t_pos -= 6;
+    else t_pos += 1;
+
+    if (t_pos < 1) t_pos = 1;
+    if (t_pos > FINISH) t_pos = FINISH;
+    return t_pos;
+}
+int moveH(int h_pos) {
+    int num = rand() % 10 + 1;
+    if (num >= 1 && num <= 2) h_pos += 0;
+    else if (num >= 3 && num <= 4) h_pos += 9;
+    else if (num == 5) h_pos -= 12;
+    else if (num >= 6 && num <= 8) h_pos += 1;
+    else h_pos -= 2;
+
+    if (h_pos < 1) h_pos = 1;
+    if (h_pos > FINISH) h_pos = FINISH;
+    return h_pos;
+}
+void printPosition(int tor, int hare) {
+    for (int i = 1; i <= FINISH; i++) {
+        if (i == tor && i == hare) {
+            printf("OUCH!!!");
+            i += 6;
+        } else if (i == tor)
+            printf("T");
+        else if (i == hare)
+            printf("H");
+        else
+            printf(" ");
+    }
+    printf(".\n");
+}

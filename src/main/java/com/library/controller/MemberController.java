@@ -3,6 +3,7 @@ package com.library.controller;
 import com.library.dto.MemberRequestDTO;
 import com.library.dto.MemberResponseDTO;
 import com.library.service.MemberService;
+import com.library.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -15,18 +16,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
 @Tag(name = "Members", description = "CRUD operations for library members")
 public class MemberController {
 
     private final MemberService memberService;
+    private final NotificationService notificationService;
 
     @PostMapping
     @Operation(summary = "Register a new member")
     public ResponseEntity<MemberResponseDTO> create(@Valid @RequestBody MemberRequestDTO request) {
         MemberResponseDTO created = memberService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PostMapping("/{id}/notify")
+    @Operation(summary = "Send an asynchronous notification to a member")
+    public ResponseEntity<String> notifyMember(@PathVariable Long id) {
+        notificationService.sendAsyncNotification("Hello Member " + id + ", your book is ready!");
+        return ResponseEntity.ok("Notification is being processed in the background...");
     }
 
     @GetMapping("/{id}")
@@ -36,7 +45,7 @@ public class MemberController {
     }
 
     @GetMapping
-    @Operation(summary = "List members (paginated & sortable, e.g. ?page=0&size=10&sort=fullName,asc)")
+    @Operation(summary = "List members (paginated & sortable)")
     public ResponseEntity<Page<MemberResponseDTO>> getAll(
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
         return ResponseEntity.ok(memberService.getAll(pageable));
@@ -45,7 +54,7 @@ public class MemberController {
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing member")
     public ResponseEntity<MemberResponseDTO> update(@PathVariable Long id,
-                                                     @Valid @RequestBody MemberRequestDTO request) {
+                                                    @Valid @RequestBody MemberRequestDTO request) {
         return ResponseEntity.ok(memberService.update(id, request));
     }
 
